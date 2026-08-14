@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset for zero sideways scrolling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden; /* Strictly prevents sideways scrolling */
+            background-color: #ffffff; /* Strict pure white as requested */
+            color: #000000; /* Strict black text, no grey */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Container that fills the screen dynamically */
+        .settings-container {
+            width: 100%;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Header Layout */
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #000000;
+            letter-spacing: -0.5px;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .close-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #442cf5; /* Exact purple/blue from image */
+            stroke-width: 2.5;
+            stroke-linecap: round;
+        }
+
+        /* Hero / Avatar Section */
+        .avatar-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #f0edff; /* Very light purple/white */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .user-badge {
+            background: #f0edff;
+            color: #442cf5;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 10px 24px;
+            border-radius: 20px;
+            margin-bottom: 36px;
+        }
+
+        /* Menu Options that stretch to fill screen width */
+        .options-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .option-item {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06); /* Soft shadow to distinguish from white background */
+            transition: transform 0.1s ease;
+        }
+
+        .option-item:active {
+            transform: scale(0.98);
+        }
+
+        .option-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #f0edff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .option-text h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .option-text p {
+            font-size: 0.9rem;
+            color: #000000; /* Replaced grey with black as instructed */
+            font-weight: 400;
+        }
+
+        .arrow-icon {
+            width: 20px;
+            height: 20px;
+            stroke: #442cf5;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <main class="settings-container">
+        
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="title">Settings</h1>
+            <button class="close-btn" aria-label="Close settings">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Profile Section -->
+        <section class="avatar-circle">
+            <!-- Custom Crown with Star SVG matching photo -->
+            <svg width="68" height="68" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Crown Base -->
+                <path d="M12 46L8 22L22 30L32 12L42 30L56 22L52 46H12Z" stroke="#442cf5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Bottom Line -->
+                <line x1="12" y1="52" x2="52" y2="52" stroke="#442cf5" stroke-width="3" stroke-linecap="round"/>
+                <!-- Crown Point Circles -->
+                <circle cx="8" cy="22" r="3" fill="#ffffff" stroke="#442cf5" stroke-width="2"/>
+                <circle cx="32" cy="12" r="3" fill="#ffffff" stroke="#442cf5" stroke-width="2"/>
+                <circle cx="56" cy="22" r="3" fill="#ffffff" stroke="#442cf5" stroke-width="2"/>
+                <!-- Star inside Crown -->
+                <polygon points="32,26 33.5,30 37.5,30.5 34.5,33 35.5,37 32,35 28.5,37 29.5,33 26.5,30.5 30.5,30" fill="none" stroke="#442cf5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </section>
+
+        <!-- User Badge -->
+        <div class="user-badge">User ID: X7K4P9Q2</div>
+
+        <!-- Options Navigation -->
+        <nav class="options-list">
+            
+            <!-- My Plan -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                            <rect x="2" y="5" width="20" height="14" rx="3" stroke="#442cf5" stroke-width="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10" stroke="#442cf5" stroke-width="2"></line>
+                            <rect x="6" y="14" width="6" height="2" fill="#442cf5"></rect>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>My Plan</h4>
+                        <p>View your current plan and features.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+            <!-- Language -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="9" stroke="#442cf5" stroke-width="2"></circle>
+                            <line x1="3.6" y1="9" x2="20.4" y2="9" stroke="#442cf5" stroke-width="2"></line>
+                            <line x1="3.6" y1="15" x2="20.4" y2="15" stroke="#442cf5" stroke-width="2"></line>
+                            <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18" stroke="#442cf5" stroke-width="2"></path>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>Language</h4>
+                        <p>Choose your preferred language.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+            <!-- Help & Support -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="9" stroke="#442cf5" stroke-width="2"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="#442cf5" stroke-width="2" stroke-linecap="round"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17" stroke="#442cf5" stroke-width="3" stroke-linecap="round"></line>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>Help & Support</h4>
+                        <p>Get help and contact support.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+            <!-- Privacy & Terms -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#442cf5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <!-- Inner Lock -->
+                            <rect x="9" y="11" width="6" height="5" rx="1" stroke="#442cf5" stroke-width="2"></rect>
+                            <path d="M10 11V9.5a2 2 0 0 1 4 0V11" stroke="#442cf5" stroke-width="2" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>Privacy & Terms</h4>
+                        <p>View our privacy policy and terms.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+        </nav>
+    </main>
+
+</body>
+</html>
