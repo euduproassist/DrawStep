@@ -3,452 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DrawStep - Draw it step by step</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <title>DrawStep</title>
     <style>
-        :root {
-            --primary-purple: #7270f2;
-            --light-purple: #8785f6;
-            --text-dark: #121826;
-            --text-muted: #64748b;
-            --tape-color: rgba(190, 185, 255, 0.75);
-            --btn-gradient: linear-gradient(180deg, #7c7bf5 0%, #6864ee 100%);
-            --btn-shadow: 0 12px 28px rgba(104, 100, 238, 0.38);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
         }
 
-        /* Guarantee absolute 0px sideways scroll while keeping full vertical scroll */
         html, body {
             width: 100%;
-            max-width: 100vw;
-            overflow-x: hidden !important;
-            min-height: 100vh;
-            background-color: #f8faff;
-            color: var(--text-dark);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Canvas outer layout with subtle watercolor background gradient */
-        .app-viewport {
-            width: 100%;
-            min-height: 100vh;
+            height: 100%;
+            background-color: #f7f9fd;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            padding: 36px 16px 24px;
-            background: 
-                radial-gradient(circle at 15% 15%, rgba(215, 222, 255, 0.5) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(225, 220, 255, 0.5) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, #ffffff 0%, #f4f6fc 100%);
-            position: relative;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .main-wrapper {
+        /* Container that fits the full screen height while maintaining the image aspect ratio */
+        .landing-container {
+            position: relative;
             width: 100%;
-            max-width: 520px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Top Logo Section */
-        .brand-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .top-pencil-svg {
-            width: 52px;
-            height: 52px;
-            margin-bottom: 6px;
-        }
-
-        .brand-title {
-            font-size: 2.85rem;
-            font-weight: 800;
-            letter-spacing: -0.6px;
-            color: #121826;
-            line-height: 1;
-        }
-
-        .brand-title span {
-            color: var(--primary-purple);
-        }
-
-        .brand-subtitle {
-            font-size: 1rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-top: 6px;
-        }
-
-        /* Headline Section */
-        .hero-heading {
-            font-size: 1.85rem;
-            font-weight: 800;
-            line-height: 1.25;
-            color: #121826;
-            margin-bottom: 32px;
-            padding: 0 10px;
-        }
-
-        .hero-heading span {
-            color: var(--primary-purple);
-        }
-
-        /* 4 Step Process Grid Bar */
-        .steps-container {
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            margin-bottom: 36px;
-            position: relative;
-        }
-
-        .step-col {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 4px;
-            position: relative;
-        }
-
-        .step-col:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 10%;
-            height: 80%;
-            width: 1px;
-            background-color: #e2e8f0;
-        }
-
-        .step-icon-svg {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 8px;
-            color: var(--primary-purple);
-        }
-
-        .step-text {
-            font-size: 0.74rem;
-            font-weight: 600;
-            color: #475569;
-            line-height: 1.2;
-        }
-
-        /* Showcase Area (Overlapping Cards & Pencil) */
-        .showcase-area {
-            width: 100%;
-            height: 360px;
-            position: relative;
-            margin-bottom: 20px;
+            max-width: 500px; /* Standard mobile app width preview */
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Left Card - Color Landscape */
-        .card-left {
-            position: absolute;
-            left: 2%;
-            top: 15px;
-            width: 225px;
-            background: #ffffff;
-            padding: 10px 10px 18px 10px;
-            border-radius: 4px;
-            box-shadow: 0 14px 35px rgba(30, 41, 59, 0.1);
-            transform: rotate(-6deg);
-            z-index: 2;
-        }
-
-        .tape-effect {
-            position: absolute;
-            top: -12px;
-            left: 32%;
-            width: 75px;
-            height: 24px;
-            background: var(--tape-color);
-            transform: rotate(-2deg);
-            backdrop-filter: blur(2px);
-            z-index: 5;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-            border-radius: 1px;
-        }
-
-        .card-left img {
+        /* Full Screen Background Graphic */
+        .landing-bg {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 2px;
             display: block;
-            background-color: #e2e8f0;
         }
 
-        /* Connector Arrow */
-        .arrow-connector {
+        /* Invisible clickable hotspot over 'Get Started' */
+        .btn-get-started {
             position: absolute;
-            left: 45%;
-            top: 32%;
-            width: 48px;
-            z-index: 3;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Right Card - Pencil Drawing */
-        .card-right {
-            position: absolute;
-            right: 0%;
-            top: 0;
-            width: 245px;
-            background: #ffffff;
-            padding: 12px 12px 22px 12px;
-            border-radius: 4px;
-            box-shadow: 0 18px 40px rgba(30, 41, 59, 0.12);
-            transform: rotate(5deg);
-            z-index: 1;
-        }
-
-        .card-right img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 2px;
-            display: block;
-            background-color: #f1f5f9;
-        }
-
-        /* Realist Graphite Pencil Resting Across Bottom Right Corner */
-        .pencil-real-graphic {
-            position: absolute;
-            right: -20px;
-            bottom: -50px;
-            width: 240px;
-            z-index: 10;
-            transform: rotate(-48deg);
-            pointer-events: none;
-            filter: drop-shadow(10px 15px 12px rgba(0,0,0,0.22));
-        }
-
-        /* Call To Action Button */
-        .cta-btn {
-            width: 100%;
-            max-width: 440px;
-            height: 56px;
-            background: var(--btn-gradient);
-            color: #ffffff;
-            border: none;
+            bottom: 18.5%;
+            left: 17%;
+            width: 66%;
+            height: 5.5%;
             border-radius: 14px;
-            font-size: 1.05rem;
-            font-weight: 700;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: var(--btn-shadow);
             text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            z-index: 5;
-            margin-top: 10px;
+            z-index: 10;
+            /* Debug mode: uncomment background line below to test hotspot alignment */
+            /* background: rgba(255, 0, 0, 0.3); */
         }
 
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 32px rgba(104, 100, 238, 0.48);
-        }
-
-        /* Bottom Decorative Ribbon with Loop Heart */
-        .bottom-ribbon {
-            width: 100%;
-            max-width: 480px;
-            margin-top: 28px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .bottom-ribbon svg {
-            width: 100%;
-            height: auto;
-        }
-
-        /* Mobile Adjustments for Seamless Viewport Fitting */
-        @media (max-width: 480px) {
-            .brand-title {
-                font-size: 2.3rem;
-            }
-
-            .hero-heading {
-                font-size: 1.45rem;
-            }
-
-            .showcase-area {
-                height: 310px;
-            }
-
-            .card-left {
-                width: 175px;
-                left: 0;
-            }
-
-            .card-left img {
-                height: 155px;
-            }
-
-            .card-right {
-                width: 195px;
-                right: 0;
-            }
-
-            .card-right img {
-                height: 195px;
-            }
-
-            .pencil-real-graphic {
-                width: 190px;
-                right: -15px;
-                bottom: -35px;
-            }
-
-            .step-text {
-                font-size: 0.68rem;
-            }
+        /* Invisible clickable hotspot over 'View plans' */
+        .btn-view-plans {
+            position: absolute;
+            bottom: 11%;
+            left: 35%;
+            width: 30%;
+            height: 3.5%;
+            cursor: pointer;
+            text-decoration: none;
+            z-index: 10;
+            /* Debug mode: uncomment background line below to test hotspot alignment */
+            /* background: rgba(0, 255, 0, 0.3); */
         }
     </style>
 </head>
 <body>
 
-    <div class="app-viewport">
-        
-        <main class="main-wrapper">
-            
-            <!-- Header & Pencil Logo -->
-            <header class="brand-header">
-                <svg class="top-pencil-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 48 L15 35 L40 10 C 43 7, 48 7, 51 10 C 54 13, 54 18, 51 21 L26 46 L13 49 Z" stroke="#7270f2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    <path d="M35 15 L46 26" stroke="#7270f2" stroke-width="3.5" stroke-linecap="round"/>
-                    <path d="M12 48 Q 4 54, 18 56" stroke="#7270f2" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                </svg>
-                <h1 class="brand-title">Draw<span>Step</span></h1>
-                <p class="brand-subtitle">Draw it step by step.</p>
-            </header>
+    <div class="landing-container">
+        <!-- Main Graphic Asset -->
+        <img src="assets/landing.png" alt="DrawStep Landing Screen" class="landing-bg">
 
-            <!-- Headline -->
-            <h2 class="hero-heading">
-                Turn any photo into a<br>
-                <span>step-by-step</span> <span>drawing lesson.</span>
-            </h2>
-
-            <!-- 4 Step Features Bar (Pure Embedded SVG Icons) -->
-            <section class="steps-container">
-                <div class="step-col">
-                    <svg class="step-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21 15 16 10 5 21"/>
-                    </svg>
-                    <span class="step-text">Choose a photo</span>
-                </div>
-                <div class="step-col">
-                    <svg class="step-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
-                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
-                        <path d="M2 2l7.5 7.5"/>
-                    </svg>
-                    <span class="step-text">Pick your style</span>
-                </div>
-                <div class="step-col">
-                    <svg class="step-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 3v3m0 12v3M3 12h3m12 0h3m-3.5-6.5l-2 2m-7 7l-2 2m9 0l-2-2m-7-7l-2-2"/>
-                    </svg>
-                    <span class="step-text">Get your lesson</span>
-                </div>
-                <div class="step-col">
-                    <svg class="step-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 22h20"/>
-                        <path d="M12 2v15"/>
-                        <path d="M6 17l6-15 6 15"/>
-                    </svg>
-                    <span class="step-text">Draw step by step</span>
-                </div>
-            </section>
-
-            <!-- Image Comparison Showcase Section -->
-            <section class="showcase-area">
-                
-                <!-- Original Photo Card (Left) -->
-                <div class="card-left">
-                    <div class="tape-effect"></div>
-                    <img src="assets/origin-land.png" alt="Original Landscape Photo">
-                </div>
-
-                <!-- Connector Arrow -->
-                <div class="arrow-connector">
-                    <svg viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 25 Q 25 5, 42 15" stroke="#7270f2" stroke-width="2.5" stroke-linecap="round"/>
-                        <path d="M35 10 L43 16 L37 22" stroke="#7270f2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-
-                <!-- Sketch Card (Right) -->
-                <div class="card-right">
-                    <img src="assets/pencil-land.png" alt="Pencil Drawing Sketch">
-                </div>
-
-                <!-- Realistic Wooden Pencil resting over sketch board -->
-                <svg class="pencil-real-graphic" viewBox="0 0 240 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Pencil Body -->
-                    <rect x="25" y="8" width="170" height="14" rx="2" fill="#202632"/>
-                    <line x1="25" y1="12" x2="195" y2="12" stroke="#333d4e" stroke-width="1.5"/>
-                    <!-- Wood Tip -->
-                    <polygon points="195,8 230,15 195,22" fill="#d9b382"/>
-                    <!-- Graphite Tip -->
-                    <polygon points="218,12 230,15 218,18" fill="#121826"/>
-                    <!-- Eraser Metallic Ring -->
-                    <rect x="20" y="8" width="8" height="14" fill="#cbd5e1"/>
-                    <!-- Eraser Cap -->
-                    <rect x="0" y="8" width="20" height="14" rx="3" fill="#e15b5b"/>
-                </svg>
-
-            </section>
-
-            <!-- Primary Call to Action Button -->
-            <a href="#" class="cta-btn">
-                Get Started 
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </a>
-
-        </main>
-
-        <!-- Bottom Ribbon Decor -->
-        <div class="bottom-ribbon">
-            <svg viewBox="0 0 500 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 20 Q 120 35, 230 20 C 240 10, 245 5, 250 15 C 255 5, 260 10, 270 20 Q 380 35, 500 20" 
-                      stroke="#a5b4fc" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </svg>
-        </div>
-
+        <!-- Clickable Overlay Hotspots -->
+        <a href="#get-started" class="btn-get-started" aria-label="Get Started"></a>
+        <a href="#view-plans" class="btn-view-plans" aria-label="View Plans"></a>
     </div>
 
 </body>
