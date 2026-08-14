@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DrawStep - Draw it step by step</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           COLOR PALETTE & CSS VARIABLES
+           ========================================== */
+        :root {
+            --accent-purple: #7B7BFF;
+            --btn-purple: #7E7EFF;
+            --btn-hover: #6B6BFF;
+            --text-main: #1D2129;
+            --text-sub: #656F7D;
+            --bg-canvas: #F7F9FC;
+            --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 20px 45px rgba(0, 0, 0, 0.12);
+            --shadow-polaroid: 0 10px 25px rgba(0, 0, 0, 0.10);
+            --tape-purple: rgba(200, 195, 255, 0.55);
+            --tape-blue: rgba(185, 215, 255, 0.60);
+        }
+
+        /* ==========================================
+           RESET & PREVENT HORIZONTAL SCROLL
+           ========================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            
+            /* STRICT HORIZONTAL LOCK (ALLOWS VERTICAL SCROLL) */
+            overflow-x: hidden !important;
+            position: relative;
+        }
+
+        /* ==========================================
+           MAIN CONTAINER & RESPONSIVE LAYOUT
+           ========================================== */
+        .app-container {
+            width: 100%;
+            max-width: 480px; /* Aligns with target mobile layout ratio */
+            margin: 0 auto;
+            min-height: 100vh;
+            padding: 40px 20px 32px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        /* ==========================================
+           BRAND HEADER
+           ========================================== */
+        .brand-header {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        .brand-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            letter-spacing: -1px;
+        }
+
+        .brand-title span {
+            color: var(--accent-purple);
+        }
+
+        .pencil-svg-icon {
+            width: 32px;
+            height: 32px;
+            margin-left: 2px;
+            transform: rotate(-12deg);
+        }
+
+        .brand-subtitle {
+            font-size: 1rem;
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* ==========================================
+           HERO SECTION & STAGE
+           ========================================== */
+        .hero-stage {
+            width: 100%;
+            position: relative;
+            margin: 10px 0 20px 0;
+        }
+
+        .headline-group {
+            position: relative;
+            z-index: 10;
+            max-width: 65%;
+            pointer-events: none;
+        }
+
+        .headline-group h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.12;
+            color: var(--text-main);
+            letter-spacing: -0.8px;
+        }
+
+        .headline-group h1 span.purple-text {
+            color: var(--accent-purple);
+            display: block;
+        }
+
+        .headline-group p {
+            font-size: 0.92rem;
+            color: var(--text-sub);
+            line-height: 1.48;
+            margin-top: 14px;
+            font-weight: 500;
+            pointer-events: auto;
+        }
+
+        /* ==========================================
+           COMPOSITE ARTWORK CANVAS
+           ========================================== */
+        .canvas-stage {
+            position: relative;
+            width: 100%;
+            height: 390px;
+            margin-top: -110px; /* Creates text-over-artwork overlap */
+        }
+
+        /* Large Drawing Sheet (pencil-land.png) */
+        .sketch-card {
+            position: absolute;
+            right: -15px;
+            top: 20px;
+            width: 270px;
+            background: #ffffff;
+            padding: 10px 10px 14px 10px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-card);
+            transform: rotate(7deg);
+            z-index: 2;
+        }
+
+        .sketch-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 2px;
+        }
+
+        /* Tape Top Right of Drawing Sheet */
+        .tape-sketch {
+            position: absolute;
+            top: -14px;
+            right: 40px;
+            width: 75px;
+            height: 24px;
+            background: var(--tape-purple);
+            transform: rotate(-10deg);
+            z-index: 5;
+            backdrop-filter: blur(1px);
+        }
+
+        /* Eraser Prop */
+        .eraser-prop {
+            position: absolute;
+            top: 35px;
+            right: -20px;
+            width: 52px;
+            height: 28px;
+            background: #E6E4DF;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: rotate(20deg);
+            z-index: 4;
+            border-left: 3px solid #D1CFCA;
+        }
+
+        /* Small Polaroid Photo (real-land.png) */
+        .polaroid-card {
+            position: absolute;
+            left: 0px;
+            bottom: 45px;
+            width: 142px;
+            background: #ffffff;
+            padding: 8px 8px 24px 8px;
+            border-radius: 3px;
+            box-shadow: var(--shadow-polaroid);
+            transform: rotate(-6deg);
+            z-index: 4;
+        }
+
+        .polaroid-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+        }
+
+        /* Tape Top of Polaroid */
+        .tape-polaroid {
+            position: absolute;
+            top: -10px;
+            left: 30%;
+            width: 55px;
+            height: 18px;
+            background: var(--tape-blue);
+            transform: rotate(5deg);
+            z-index: 6;
+        }
+
+        /* Connecting Loop Arrow */
+        .curved-arrow {
+            position: absolute;
+            left: 122px;
+            bottom: 110px;
+            width: 90px;
+            height: 60px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Layered Pencils */
+        .pencil-black {
+            position: absolute;
+            right: -25px;
+            bottom: 35px;
+            width: 14px;
+            height: 220px;
+            background: linear-gradient(90deg, #333333 0%, #1A1A1A 100%);
+            border-radius: 3px;
+            transform: rotate(-36deg);
+            transform-origin: bottom right;
+            z-index: 7;
+            box-shadow: -6px 6px 14px rgba(0,0,0,0.15);
+        }
+
+        .pencil-wood {
+            position: absolute;
+            right: -5px;
+            bottom: 10px;
+            width: 12px;
+            height: 200px;
+            background: linear-gradient(90deg, #DDAA77 0%, #C89562 100%);
+            border-radius: 3px;
+            transform: rotate(-30deg);
+            transform-origin: bottom right;
+            z-index: 7;
+            box-shadow: -5px 5px 10px rgba(0,0,0,0.10);
+        }
+
+        /* ==========================================
+           ACTION BUTTONS & FOOTER
+           ========================================== */
+        .action-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+            z-index: 10;
+        }
+
+        .btn-primary {
+            width: 100%;
+            height: 54px;
+            background-color: var(--btn-purple);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(126, 126, 255, 0.35);
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .btn-primary:active {
+            background-color: var(--btn-hover);
+            transform: scale(0.99);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            height: 54px;
+            background-color: #ffffff;
+            color: var(--text-main);
+            border: 1px solid #EAEAEA;
+            border-radius: 14px;
+            font-size: 1.02rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:active {
+            background-color: #F8F8F8;
+        }
+
+        .plans-link-wrapper {
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .plans-link {
+            color: var(--accent-purple);
+            font-size: 0.98rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .plans-link:hover {
+            opacity: 0.85;
+        }
+
+        /* ==========================================
+           RESPONSIVE VIEWPORT ADJUSTMENTS
+           ========================================== */
+        @media (max-height: 680px) {
+            .app-container {
+                padding-top: 24px;
+                padding-bottom: 20px;
+            }
+            .canvas-stage {
+                height: 340px;
+                transform: scale(0.92);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="brand-header">
+            <div class="brand-title">
+                Draw<span>Step</span>
+                <svg class="pencil-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#7B7BFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                </svg>
+            </div>
+            <p class="brand-subtitle">Draw it step by step.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="hero-stage">
+            <div class="headline-group">
+                <h1>Turn any photo <span class="purple-text">into a step-by-step</span> <span class="purple-text">drawing lesson.</span></h1>
+                <p>Choose a photo, pick your style, and let DrawStep guide you from the first line to the finished artwork.</p>
+            </div>
+
+            <!-- Canvas Stage -->
+            <div class="canvas-stage">
+                
+                <!-- Main Pencil Sketch -->
+                <div class="sketch-card">
+                    <div class="tape-sketch"></div>
+                    <img src="pencil-land.png" alt="Pencil Sketch Artwork">
+                </div>
+
+                <!-- Eraser Accessory -->
+                <div class="eraser-prop"></div>
+
+                <!-- Small Original Photo -->
+                <div class="polaroid-card">
+                    <div class="tape-polaroid"></div>
+                    <img src="real-land.png" alt="Original Landscape Photo">
+                </div>
+
+                <!-- Curved Connector Arrow -->
+                <svg class="curved-arrow" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 10 55 C 25 15, 65 10, 88 42" stroke="#7B7BFF" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <path d="M 78 35 L 88 42 L 94 30" stroke="#7B7BFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+
+                <!-- Pencils Layer -->
+                <div class="pencil-black"></div>
+                <div class="pencil-wood"></div>
+
+            </div>
+        </main>
+
+        <!-- Action Footer -->
+        <footer class="action-area">
+            <a href="#" class="btn-primary">Get Started</a>
+            <a href="#" class="btn-secondary">
+                <i class="far fa-user"></i> Sign In
+            </a>
+            <div class="plans-link-wrapper">
+                <a href="#" class="plans-link">View plans <i class="fas fa-chevron-right" style="font-size: 0.8rem;"></i></a>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
