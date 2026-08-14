@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #f8f7ff 0%, #f0edff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 16px;
+        }
+
+        .settings-card {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+
+        .avatar-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #ede9fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5842e3;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .user-badge {
+            background: #f3f0ff;
+            color: #5842e3;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+        }
+
+        .options-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: transform 0.15s ease;
+        }
+
+        .option-item:active {
+            transform: scale(0.99);
+        }
+
+        .option-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ede9fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5842e3;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .option-text h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+
+        .option-text p {
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .arrow-icon {
+            color: #5842e3;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="settings-card">
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+        <h1 class="title">Settings</h1>
+
+        <div class="avatar-circle">
+            <i class="fas fa-crown"></i>
+        </div>
+
+        <div class="user-badge">User ID: X7K4P9Q2</div>
+
+        <div class="options-list">
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box"><i class="far fa-credit-card"></i></div>
+                    <div class="option-text">
+                        <h4>My Plan</h4>
+                        <p>View your current plan and features.</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon"></i>
+            </a>
+
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box"><i class="fas fa-globe"></i></div>
+                    <div class="option-text">
+                        <h4>Language</h4>
+                        <p>Choose your preferred language.</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon"></i>
+            </a>
+
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box"><i class="far fa-question-circle"></i></div>
+                    <div class="option-text">
+                        <h4>Help & Support</h4>
+                        <p>Get help and contact support.</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon"></i>
+            </a>
+
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+                    <div class="option-text">
+                        <h4>Privacy & Terms</h4>
+                        <p>View our privacy policy and terms.</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon"></i>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
