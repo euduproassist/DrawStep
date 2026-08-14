@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DrawStep - Turn Any Photo Into A Lesson</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Modern CSS Reset & Prevent Sideways Scrolling */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Authentic Watercolor Background Texture Effect */
+            background-color: #f7f6fc;
+            background-image: 
+                radial-gradient(circle at 10% 8%, rgba(200, 190, 255, 0.35) 0%, transparent 40%),
+                radial-gradient(circle at 90% 12%, rgba(215, 205, 255, 0.3) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(210, 200, 255, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 15% 90%, rgba(220, 210, 255, 0.35) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(245, 243, 255, 0.8) 0%, transparent 100%);
+            background-attachment: fixed;
+            color: #1a1a2e;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            padding: 24px 22px 40px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Top Header Navigation */
+        .top-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .top-icon {
+            width: 28px;
+            height: 28px;
+            stroke: #6b52f0;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            cursor: pointer;
+        }
+
+        /* Brand & Logo Section */
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        .logo-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #161528;
+            letter-spacing: -0.8px;
+            line-height: 1;
+        }
+
+        .logo-title span {
+            color: #5d43ef;
+        }
+
+        .logo-pencil-container {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            margin-left: 2px;
+        }
+
+        .logo-pencil-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: #535268;
+            font-weight: 500;
+        }
+
+        /* Main Heading */
+        .main-heading {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #161528;
+            line-height: 1.3;
+            margin-bottom: 32px;
+        }
+
+        .main-heading span {
+            color: #5d43ef;
+        }
+
+        /* 4-Step Process Grid */
+        .steps-grid {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 36px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 4px;
+            width: 1px;
+            height: 36px;
+            background-color: #e3e1f0;
+        }
+
+        .step-icon {
+            width: 26px;
+            height: 26px;
+            stroke: #5d43ef;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .step-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #38374a;
+            max-width: 80px;
+            line-height: 1.2;
+        }
+
+        /* Photo & Sketch Showcase Section */
+        .showcase-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        /* Left Polaroid Photo */
+        .photo-card-left {
+            width: 48%;
+            background: #ffffff;
+            padding: 8px 8px 24px 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 2px;
+            transform: rotate(-6deg);
+            z-index: 1;
+            position: relative;
+        }
+
+        .photo-card-left img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Tape Overlay */
+        .tape {
+            position: absolute;
+            top: -12px;
+            left: 20%;
+            width: 65px;
+            height: 22px;
+            background: rgba(188, 172, 255, 0.65);
+            transform: rotate(-2deg);
+            z-index: 3;
+            backdrop-filter: blur(1px);
+        }
+
+        /* Right Sketch Drawing Paper */
+        .sketch-card-right {
+            width: 52%;
+            background: #fcfcfc;
+            padding: 10px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            transform: rotate(4deg);
+            margin-left: -12px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .sketch-card-right img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%) contrast(110%);
+        }
+
+        /* Curved Purple Connecting Arrow */
+        .arrow-curve {
+            position: absolute;
+            top: 26%;
+            left: 43%;
+            width: 36px;
+            height: 24px;
+            z-index: 4;
+        }
+
+        .arrow-curve svg {
+            width: 100%;
+            height: 100%;
+            stroke: #5d43ef;
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Real Pencil Spanning Across the Layout */
+        .long-pencil {
+            position: absolute;
+            bottom: -85px;
+            right: -25px;
+            width: 180px;
+            height: 260px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Call To Action Buttons */
+        .action-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #6b52f0 0%, #4b32e6 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 24px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 22px rgba(75, 50, 230, 0.32);
+            text-decoration: none;
+        }
+
+        .primary-btn span {
+            flex: 1;
+            text-align: center;
+        }
+
+        .primary-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            position: absolute;
+            right: 22px;
+        }
+
+        .secondary-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #5d43ef;
+        }
+
+        .secondary-link svg {
+            width: 18px;
+            height: 18px;
+            stroke: #5d43ef;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Bottom Flourish with Heart Loop */
+        .bottom-decoration {
+            width: 100%;
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bottom-decoration svg {
+            width: 100%;
+            max-width: 360px;
+            height: 32px;
+            stroke: #806cf2;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.75;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="app-container">
+        
+        <!-- Header Nav -->
+        <header class="top-bar">
+            <!-- Crown Icon -->
+            <svg class="top-icon" viewBox="0 0 24 24">
+                <path d="M3 17L5 8L10 12L12 5L14 12L19 8L21 17H3Z"></path>
+                <circle cx="12" cy="19" r="1" fill="#6b52f0"></circle>
+            </svg>
+            <!-- Gear Settings Icon -->
+            <svg class="top-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+        </header>
+
+        <!-- Brand Section -->
+        <section class="brand-section">
+            <div class="logo-row">
+                <h1 class="logo-title">Draw<span>Step</span></h1>
+                <div class="logo-pencil-container">
+                    <!-- Pencil Icon pointing down-right with curved trail line -->
+                    <svg class="logo-pencil-svg" viewBox="0 0 40 40" fill="none">
+                        <g transform="rotate(30, 20, 20)">
+                            <path d="M12 8 L24 8 L20 28 L12 8 Z" stroke="#5d43ef" stroke-width="2.2" stroke-linejoin="round"/>
+                            <path d="M12 8 L24 8 L24 4 L12 4 Z" fill="#5d43ef"/>
+                            <path d="M18 20 L20 28 L16 24" fill="#5d43ef"/>
+                        </g>
+                        <!-- Curved underline drawn by pencil -->
+                        <path d="M2 32 C 12 38, 22 36, 32 30" stroke="#5d43ef" stroke-width="2.2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="brand-subtitle">Draw it step by step.</p>
+        </section>
+
+        <!-- Main Headline -->
+        <h2 class="main-heading">
+            Turn any photo into a<br>step-by-step <span>drawing lesson.</span>
+        </h2>
+
+        <!-- Process Steps Grid -->
+        <div class="steps-grid">
+            <div class="step-item">
+                <svg class="step-icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <path d="M21 15l-5-5L5 21"></path>
+                </svg>
+                <span class="step-text">Choose a photo</span>
+            </div>
+            <div class="step-item">
+                <!-- Pencil Icon for Style -->
+                <svg class="step-icon" viewBox="0 0 24 24">
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                </svg>
+                <span class="step-text">Pick your style</span>
+            </div>
+            <div class="step-item">
+                <!-- Sparkles Icon for Lesson -->
+                <svg class="step-icon" viewBox="0 0 24 24">
+                    <path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"></path>
+                    <path d="M19 17l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"></path>
+                </svg>
+                <span class="step-text">Get your lesson</span>
+            </div>
+            <div class="step-item">
+                <!-- Easel Icon -->
+                <svg class="step-icon" viewBox="0 0 24 24">
+                    <rect x="4" y="3" width="16" height="11" rx="1"></rect>
+                    <path d="M12 14v7M8 21l2-7M16 21l-2-7M2 10h20"></path>
+                </svg>
+                <span class="step-text">Draw step by step</span>
+            </div>
+        </div>
+
+        <!-- Visual Photo Showcase -->
+        <div class="showcase-container">
+            <!-- Left Original Polaroid Photo -->
+            <div class="photo-card-left">
+                <div class="tape"></div>
+                <img src="https://picsum.photos/id/1015/400/500" alt="Landscape Photo">
+            </div>
+
+            <!-- Curved Arrow -->
+            <div class="arrow-curve">
+                <svg viewBox="0 0 30 20">
+                    <path d="M2 12 C 10 2, 20 2, 28 8 M 22 3 L 28 8 L 24 14"></path>
+                </svg>
+            </div>
+
+            <!-- Right Sketch Drawing Paper -->
+            <div class="sketch-card-right">
+                <img src="https://picsum.photos/id/1015/400/500?grayscale" alt="Landscape Sketch">
+            </div>
+
+            <!-- Long Pencil Overlapping Card Down Past Button -->
+            <svg class="long-pencil" viewBox="0 0 100 300" fill="none">
+                <g transform="rotate(-38, 50, 150)">
+                    <!-- Pencil Shaft -->
+                    <rect x="44" y="0" width="12" height="240" fill="#18171c" rx="1"/>
+                    <!-- Wooden Tip -->
+                    <path d="M44 240 L50 270 L56 240 Z" fill="#d8b28a"/>
+                    <!-- Lead Tip -->
+                    <path d="M48 260 L50 270 L52 260 Z" fill="#18171c"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Action Callouts -->
+        <div class="action-container">
+            <a href="#" class="primary-btn">
+                <span>Get Started</span>
+                <svg viewBox="0 0 24 24">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+
+            <a href="#" class="secondary-link">
+                <span>View plans</span>
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Bottom Line with Heart Loop -->
+        <div class="bottom-decoration">
+            <svg viewBox="0 0 300 28">
+                <path d="M0 14 C 40 14, 80 10, 120 14 C 135 15, 142 8, 148 10 C 151 5, 155 5, 158 10 C 164 8, 171 15, 186 14 C 220 10, 260 14, 300 14"/>
+            </svg>
+        </div>
+
+    </main>
+
+</body>
+</html>
