@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #f7f6fd linear-gradient(180deg, #f9f8fe 0%, #f1effd 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 16px;
+            color: #0f172a;
+        }
+
+        /* Container designed for all screen sizes */
+        .settings-card {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        /* Top Header */
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0d0f12;
+            letter-spacing: -0.5px;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+            transition: transform 0.15s ease;
+        }
+
+        .close-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .close-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: #0d0f12;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+        }
+
+        /* Profile Section */
+        .avatar-circle {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            background: #ede9fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .avatar-circle svg {
+            width: 56px;
+            height: 56px;
+            color: #5538ee;
+        }
+
+        .user-badge {
+            background: #eeebfe;
+            color: #5538ee;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 20px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Options List */
+        .options-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option-item {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(88, 66, 227, 0.03);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .option-item:active {
+            transform: scale(0.98);
+        }
+
+        .option-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #ede9fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-box svg {
+            width: 24px;
+            height: 24px;
+            stroke: #5538ee;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .option-text h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0d0f12;
+            margin-bottom: 3px;
+        }
+
+        .option-text p {
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .arrow-icon {
+            width: 18px;
+            height: 18px;
+            stroke: #5538ee;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        /* Mobile specific responsiveness */
+        @media (max-width: 380px) {
+            .settings-card {
+                padding: 0 4px;
+            }
+            .avatar-circle {
+                width: 96px;
+                height: 96px;
+            }
+            .avatar-circle svg {
+                width: 48px;
+                height: 48px;
+            }
+            .option-item {
+                padding: 16px;
+            }
+            .icon-box {
+                width: 44px;
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="settings-card">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Settings</h1>
+            <button class="close-btn" aria-label="Close settings">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Avatar Crown Hero -->
+        <section class="avatar-circle">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 46L8 22L22 30L32 14L42 30L56 22L52 46H12Z" stroke="#5538ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <polygon points="32,24 33.5,27 37,27.5 34.5,30 35,33.5 32,32 29,33.5 29.5,30 27,27.5 30.5,27" fill="none" stroke="#5538ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </section>
+
+        <!-- User Badge -->
+        <div class="user-badge">User ID: X7K4P9Q2</div>
+
+        <!-- Options Navigation -->
+        <nav class="options-list">
+            <!-- My Plan -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="5" width="20" height="14" rx="3" stroke="#5538ee"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10" stroke="#5538ee"></line>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>My Plan</h4>
+                        <p>View your current plan and features.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+            <!-- Language -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke="#5538ee"></circle>
+                            <line x1="3.6" y1="9" x2="20.4" y2="9" stroke="#5538ee"></line>
+                            <line x1="3.6" y1="15" x2="20.4" y2="15" stroke="#5538ee"></line>
+                            <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18" stroke="#5538ee"></path>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>Language</h4>
+                        <p>Choose your preferred language.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+            <!-- Help & Support -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke="#5538ee"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="#5538ee"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17" stroke="#5538ee" stroke-width="3"></line>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>Help & Support</h4>
+                        <p>Get help and contact support.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+
+            <!-- Privacy & Terms -->
+            <a href="#" class="option-item">
+                <div class="option-left">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#5538ee"></path>
+                            <rect x="9.5" y="11" width="5" height="4" rx="1" stroke="#5538ee"></rect>
+                            <path d="M10.5 11V9.5a1.5 1.5 0 0 1 3 0V11" stroke="#5538ee"></path>
+                        </svg>
+                    </div>
+                    <div class="option-text">
+                        <h4>Privacy & Terms</h4>
+                        <p>View our privacy policy and terms.</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </nav>
+    </main>
+
+</body>
+</html>
