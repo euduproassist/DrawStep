@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DrawStep - Draw it step by step</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-purple: #7a73f1;
+            --primary-gradient: linear-gradient(135deg, #8176f7 0%, #6d63eb 100%);
+            --text-dark: #121826;
+            --text-muted: #64748b;
+            --purple-light: #ecebfe;
+            --bg-color: #f7f9fc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle Watercolor/Cloud Background Overlay Effect */
+        .bg-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(220, 226, 250, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(225, 218, 253, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(247, 249, 252, 1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Top Brand Header */
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .pencil-icon-top {
+            font-size: 2.2rem;
+            color: var(--primary-purple);
+            transform: rotate(-45deg);
+            margin-bottom: 8px;
+        }
+
+        .brand-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .brand-title span {
+            color: var(--primary-purple);
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Main Headline */
+        .hero-heading {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: var(--text-dark);
+            margin-bottom: 32px;
+            padding: 0 10px;
+        }
+
+        .hero-heading span {
+            color: var(--primary-purple);
+        }
+
+        /* 4-Step Feature Grid */
+        .steps-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Vertical Dividers between features */
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background-color: #e2e8f0;
+        }
+
+        .step-icon {
+            font-size: 1.4rem;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #475569;
+            line-height: 1.2;
+        }
+
+        /* Artwork Showcase Area */
+        .artwork-container {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            margin-bottom: 30px;
+        }
+
+        /* Original Color Photo Frame (Left, Tilted Left) */
+        .photo-card {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            width: 210px;
+            background: #ffffff;
+            padding: 10px 10px 16px 10px;
+            border-radius: 4px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            transform: rotate(-8deg);
+            z-index: 1;
+        }
+
+        /* Tape Effect on Top Left Frame */
+        .tape-effect {
+            position: absolute;
+            top: -12px;
+            left: 35%;
+            width: 60px;
+            height: 22px;
+            background-color: rgba(203, 197, 255, 0.75);
+            transform: rotate(-3deg);
+            border-radius: 2px;
+            backdrop-filter: blur(2px);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        /* Curved Arrow Between Pictures */
+        .curved-arrow {
+            position: absolute;
+            left: 45%;
+            top: 35%;
+            width: 50px;
+            height: 30px;
+            z-index: 3;
+            color: var(--primary-purple);
+            transform: rotate(-10deg);
+        }
+
+        /* Pencil Sketch Sketchbook Frame (Right, Overlapping, Tilted Right) */
+        .sketch-card {
+            position: absolute;
+            right: 15px;
+            top: 0;
+            width: 230px;
+            background: #fcfbf9;
+            padding: 12px 12px 18px 12px;
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transform: rotate(6deg);
+            z-index: 2;
+        }
+
+        .sketch-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        /* Realistic Pencil Overlay */
+        .pencil-overlay {
+            position: absolute;
+            right: -10px;
+            bottom: -35px;
+            width: 180px;
+            z-index: 4;
+            transform: rotate(-35deg);
+            pointer-events: none;
+            filter: drop-shadow(5px 10px 8px rgba(0,0,0,0.15));
+        }
+
+        /* Primary Call To Action Button */
+        .cta-button {
+            width: 100%;
+            height: 56px;
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(121, 115, 241, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            position: relative;
+            z-index: 5;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(121, 115, 241, 0.45);
+        }
+
+        /* Decorative Heart Line at Bottom */
+        .bottom-line-decor {
+            margin-top: 35px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bottom-line-decor svg {
+            width: 80%;
+            max-width: 320px;
+            height: auto;
+        }
+
+        /* Media Queries for Smaller Screen Compatibility */
+        @media (max-width: 480px) {
+            .brand-title {
+                font-size: 2.1rem;
+            }
+            .hero-heading {
+                font-size: 1.5rem;
+            }
+            .artwork-container {
+                height: 290px;
+            }
+            .photo-card {
+                width: 170px;
+                left: 10px;
+            }
+            .photo-card img {
+                height: 150px;
+            }
+            .sketch-card {
+                width: 185px;
+                right: 10px;
+            }
+            .sketch-card img {
+                height: 185px;
+            }
+            .pencil-overlay {
+                width: 140px;
+                bottom: -25px;
+            }
+            .steps-grid {
+                gap: 4px;
+            }
+            .step-text {
+                font-size: 0.68rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-wrapper">
+        <main class="main-container">
+            
+            <!-- Brand Logo -->
+            <header class="brand-header">
+                <i class="fas fa-pencil-alt pencil-icon-top"></i>
+                <h1 class="brand-title">Draw<span>Step</span></h1>
+                <p class="brand-subtitle">Draw it step by step.</p>
+            </header>
+
+            <!-- Main Headline -->
+            <h2 class="hero-heading">
+                Turn any photo into a<br>
+                step-by-step <span>drawing lesson.</span>
+            </h2>
+
+            <!-- Features Bar -->
+            <section class="steps-grid">
+                <div class="step-item">
+                    <div class="step-icon"><i class="far fa-image"></i></div>
+                    <div class="step-text">Choose a photo</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon"><i class="fas fa-pencil-alt"></i></div>
+                    <div class="step-text">Pick your style</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon"><i class="far fa-star"></i></div>
+                    <div class="step-text">Get your lesson</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon"><i class="fas fa-easel"></i></div>
+                    <div class="step-text">Draw step by step</div>
+                </div>
+            </section>
+
+            <!-- Interactive Image Comparison Display -->
+            <section class="artwork-container">
+                <!-- Original Photo Frame -->
+                <div class="photo-card">
+                    <div class="tape-effect"></div>
+                    <img src="assets/origin-land.png" alt="Original Landscape Photo">
+                </div>
+
+                <!-- Arrow indicator -->
+                <svg class="curved-arrow" viewBox="0 0 50 30" fill="none" stroke="#7a73f1" stroke-width="2.5" stroke-linecap="round">
+                    <path d="M5 10 Q 25 0, 42 18"></path>
+                    <polyline points="34,18 43,19 41,10"></polyline>
+                </svg>
+
+                <!-- Sketch Pad Frame -->
+                <div class="sketch-card">
+                    <img src="assets/pencil-land.png" alt="Pencil Drawing Sketch">
+                </div>
+
+                <!-- Graphic Pencil Visual -->
+                <svg class="pencil-overlay" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20 L160 5 L175 20 L160 35 Z" fill="#2d3748"/>
+                    <path d="M160 5 L190 20 L160 35 Z" fill="#e2e8f0"/>
+                    <path d="M180 15 L190 20 L180 25 Z" fill="#1a202c"/>
+                </svg>
+            </section>
+
+            <!-- Call to Action -->
+            <a href="#" class="cta-button">
+                Get Started <i class="fas fa-arrow-right"></i>
+            </a>
+
+            <!-- Decorative Bottom Loop -->
+            <div class="bottom-line-decor">
+                <svg viewBox="0 0 300 40" fill="none" stroke="#a5a0f8" stroke-width="2">
+                    <path d="M 10 20 Q 120 35, 140 20 C 145 10, 155 10, 150 22 C 145 32, 135 22, 145 18 Q 170 35, 290 20" />
+                </svg>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
