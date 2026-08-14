@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DrawStep - Draw it step by step</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-purple: #7270f2;
+            --gradient-purple: linear-gradient(180deg, #7c7cf5 0%, #6864ee 100%);
+            --text-dark: #121826;
+            --text-muted: #64748b;
+            --tape-color: rgba(185, 180, 252, 0.65);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+
+        /* Prevent Horizontal Scrolling Across All Devices */
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-color: #f7f9fd;
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Watercolor Outer Background */
+        .page-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 16px 30px;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(220, 226, 255, 0.45) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(225, 218, 255, 0.45) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #ffffff 0%, #f4f6fc 100%);
+            position: relative;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Top Brand Header */
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .pencil-top-icon {
+            font-size: 2.8rem;
+            color: var(--primary-purple);
+            transform: rotate(-45deg);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 4px rgba(114, 112, 242, 0.2));
+        }
+
+        .brand-title {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            color: #1a1e2e;
+            line-height: 1;
+        }
+
+        .brand-title span {
+            color: var(--primary-purple);
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        /* Headline */
+        .hero-heading {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.3;
+            color: #182030;
+            margin-bottom: 36px;
+            max-width: 500px;
+        }
+
+        .hero-heading span {
+            color: var(--primary-purple);
+        }
+
+        /* 4 Steps Row */
+        .steps-bar {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .step-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 4px;
+            position: relative;
+        }
+
+        .step-col:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background-color: #e2e8f0;
+        }
+
+        .step-col i {
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+        }
+
+        .step-col span {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #475569;
+            line-height: 1.25;
+        }
+
+        /* Showcase Stage */
+        .showcase-stage {
+            width: 100%;
+            height: 380px;
+            position: relative;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Photo Left */
+        .photo-card-left {
+            position: absolute;
+            left: 5%;
+            top: 20px;
+            width: 220px;
+            background: #ffffff;
+            padding: 10px 10px 18px;
+            border-radius: 4px;
+            box-shadow: 0 14px 35px rgba(30, 41, 59, 0.09);
+            transform: rotate(-7deg);
+            z-index: 2;
+        }
+
+        .washi-tape-top {
+            position: absolute;
+            top: -12px;
+            left: 30%;
+            width: 75px;
+            height: 24px;
+            background: var(--tape-color);
+            transform: rotate(-2deg);
+            backdrop-filter: blur(2px);
+            z-index: 5;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .photo-card-left img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        /* Connector Arrow */
+        .connector-arrow {
+            position: absolute;
+            left: 45%;
+            top: 32%;
+            width: 50px;
+            z-index: 3;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Photo Right (Sketch) */
+        .sketch-card-right {
+            position: absolute;
+            right: 4%;
+            top: 0;
+            width: 250px;
+            background: #ffffff;
+            padding: 12px 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 18px 40px rgba(30, 41, 59, 0.12);
+            transform: rotate(5deg);
+            z-index: 1;
+        }
+
+        .sketch-card-right img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        /* Realistic Pencil Visual Overlay */
+        .pencil-graphic {
+            position: absolute;
+            right: -25px;
+            bottom: -35px;
+            width: 220px;
+            z-index: 10;
+            transform: rotate(-42deg);
+            pointer-events: none;
+            filter: drop-shadow(8px 12px 10px rgba(0,0,0,0.2));
+        }
+
+        /* CTA Button */
+        .cta-button {
+            width: 100%;
+            max-width: 440px;
+            height: 56px;
+            background: var(--gradient-purple);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(114, 112, 242, 0.4);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 5;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(114, 112, 242, 0.5);
+        }
+
+        /* Bottom Decorative Wavy Line */
+        .bottom-ribbon {
+            width: 100%;
+            max-width: 480px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bottom-ribbon svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 580px) {
+            .brand-title {
+                font-size: 2.4rem;
+            }
+
+            .hero-heading {
+                font-size: 1.5rem;
+                padding: 0 10px;
+            }
+
+            .showcase-stage {
+                height: 310px;
+                transform: scale(0.88);
+            }
+
+            .photo-card-left {
+                left: 2%;
+                width: 180px;
+            }
+
+            .photo-card-left img {
+                height: 160px;
+            }
+
+            .sketch-card-right {
+                right: 0%;
+                width: 210px;
+            }
+
+            .sketch-card-right img {
+                height: 210px;
+            }
+
+            .pencil-graphic {
+                width: 170px;
+                right: -20px;
+                bottom: -25px;
+            }
+
+            .cta-button {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        
+        <div class="content-wrapper">
+            <!-- Header -->
+            <header class="brand-header">
+                <i class="fa-solid fa-pencil pencil-top-icon"></i>
+                <h1 class="brand-title">Draw<span>Step</span></h1>
+                <p class="brand-subtitle">Draw it step by step.</p>
+            </header>
+
+            <!-- Headline -->
+            <h2 class="hero-heading">
+                Turn any photo into a<br>
+                <span>step-by-step</span> <span>drawing lesson.</span>
+            </h2>
+
+            <!-- Steps Grid -->
+            <div class="steps-bar">
+                <div class="step-col">
+                    <i class="fa-regular fa-image"></i>
+                    <span>Choose a photo</span>
+                </div>
+                <div class="step-col">
+                    <i class="fa-solid fa-pen-line"></i>
+                    <span>Pick your style</span>
+                </div>
+                <div class="step-col">
+                    <i class="fa-regular fa-sparkles"></i>
+                    <span>Get your lesson</span>
+                </div>
+                <div class="step-col">
+                    <i class="fa-solid fa-easel"></i>
+                    <span>Draw step by step</span>
+                </div>
+            </div>
+
+            <!-- Image Comparison Section -->
+            <div class="showcase-stage">
+                
+                <!-- Left Original Photo -->
+                <div class="photo-card-left">
+                    <div class="washi-tape-top"></div>
+                    <img src="assets/origin-land.png" alt="Original Landscape Photo">
+                </div>
+
+                <!-- Connector Arrow -->
+                <div class="connector-arrow">
+                    <svg viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 25 Q 25 5, 42 15" stroke="#7270f2" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M35 10 L43 16 L37 22" stroke="#7270f2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <!-- Right Pencil Sketch Photo -->
+                <div class="sketch-card-right">
+                    <img src="assets/pencil-land.png" alt="Pencil Drawing Sketch">
+                </div>
+
+                <!-- Pencil Overlay Graphic -->
+                <svg class="pencil-graphic" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="5" width="150" height="10" rx="2" fill="#2d3748"/>
+                    <polygon points="170,5 195,10 170,15" fill="#d2b48c"/>
+                    <polygon points="187,8 195,10 187,12" fill="#1a202c"/>
+                    <rect x="0" y="5" width="20" height="10" rx="2" fill="#e53e3e"/>
+                    <rect x="18" y="5" width="4" height="10" fill="#cbd5e1"/>
+                </svg>
+
+            </div>
+
+            <!-- Call To Action Button -->
+            <a href="#" class="cta-button">
+                Get Started <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Decorative Bottom Wavy Ribbon -->
+        <div class="bottom-ribbon">
+            <svg viewBox="0 0 500 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 20 Q 120 35, 230 20 C 240 10, 245 5, 250 15 C 255 5, 260 10, 270 20 Q 380 35, 500 20" 
+                      stroke="#a5b4fc" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+    </div>
+
+</body>
+</html>
