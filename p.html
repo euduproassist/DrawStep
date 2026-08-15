@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Modern Reset */
+        /* Modern Reset to guarantee zero horizontal scrolling */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -33,7 +33,7 @@
             width: 100%;
             max-width: 520px;
             min-height: 100vh;
-            padding: 20px 20px 28px 20px;
+            padding: 24px 20px 32px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -47,7 +47,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
 
         .top-bar img {
@@ -68,7 +68,11 @@
             cursor: pointer;
         }
 
-        /* Brand / Logo Section */
+
+        /* =========================================================
+           BRAND / LOGO
+           ========================================================= */
+
         .brand-section {
             display: flex;
             flex-direction: column;
@@ -78,12 +82,16 @@
         }
 
         .logo-row {
-            display: inline-block;
+            display: block;
+            width: max-content;
+            height: 52px; /* Slightly reduced container height */
             position: relative;
-            margin-bottom: 0px;
-            padding-right: 20px; /* Leave breathing room for pencil tip overlap */
+            margin-bottom: 0px; /* Removed margin to pull subtitle directly upward */
         }
 
+        /*
+         * LOGO TEXT
+         */
         .logo-title {
             font-size: 2.15rem;
             font-weight: 600;
@@ -93,7 +101,6 @@
             white-space: nowrap;
             position: relative;
             z-index: 2;
-            margin: 0;
         }
 
         .logo-title span {
@@ -101,20 +108,31 @@
             font-weight: 600;
         }
 
+
+        /*
+         * =========================================================
+         * LOGO PENCIL
+         * =========================================================
+         */
         .logo-icon {
             position: absolute;
-            left: calc(100% - 32px);
-            top: -12px;
+
+            /* Directly beside the final "p" */
+            left: calc(100% - 13px);
+            top: -12px; /* Tweak to keep pencil balanced with the tighter text */
+
             width: 58px;
             height: 58px;
+
             overflow: visible;
+
             stroke: #6C5CE7;
             fill: none;
             stroke-width: 2.1;
             stroke-linecap: round;
             stroke-linejoin: round;
+
             z-index: 3;
-            pointer-events: none;
         }
 
         .logo-icon .logo-line {
@@ -125,13 +143,14 @@
             stroke-linejoin: round;
         }
 
+
         .brand-subtitle {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: #5A607F;
             font-weight: 500;
-            margin-top: 2px; /* Pull tight to DrawStep title */
-            line-height: 1.2;
+            margin-top: -2px; /* Micro adjustment to gently pull text closer */
         }
+
 
         /* Main Heading */
         .main-heading {
@@ -140,20 +159,21 @@
             font-weight: 800;
             color: #1E2029;
             line-height: 1.3;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .main-heading span {
             color: #6C5CE7;
         }
 
-        /* Process Steps Grid */
+
+        /* 4-Step Process Grid */
         .steps-grid {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         .step-item {
@@ -194,14 +214,15 @@
             line-height: 1.25;
         }
 
-        /* Visual Showcase (Unchanged Cards) */
+
+        /* Visual Showcase */
         .showcase-container {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: flex-end;
             position: relative;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
             padding: 10px 0;
         }
 
@@ -236,6 +257,8 @@
             border-radius: 2px;
         }
 
+
+        /* Custom Hand-Drawn Arrow Styling */
         .arrow-curve {
             position: absolute;
             top: 20%;
@@ -253,12 +276,13 @@
             overflow: visible;
         }
 
-        /* Actions */
+
+        /* Buttons Container */
         .action-container {
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
             align-items: center;
         }
 
@@ -316,6 +340,7 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
+
     </style>
 </head>
 
@@ -323,36 +348,135 @@
 
     <main class="app-container">
 
-        <!-- Top Controls -->
+        <!-- Header Controls -->
         <header class="top-bar">
-            <img src="assets/free.png" alt="Free Icon">
+
+            <img src="assets/free.png"
+                 alt="Free Icon"
+                 style="width: 26px; height: 26px; object-fit: contain;">
+
             <svg viewBox="0 0 24 24">
+
                 <circle cx="12" cy="12" r="3"></circle>
+
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+
             </svg>
+
         </header>
 
-        <!-- Tightened Brand Header -->
-        <section class="brand-section">
-            <div class="logo-row">
-                <h1 class="logo-title">Draw<span>Step</span></h1>
 
-                <svg class="logo-icon" viewBox="0 0 58 58" aria-hidden="true">
-                    <path class="logo-line" d="M 33.1 33.8 C 32 38, 28 42, 24 42 C 20 42, 17 39, 13 41 C 10 42, 7 45, 4 45" />
+        <!-- Brand Section -->
+        <section class="brand-section">
+
+            <div class="logo-row">
+
+                <!-- DrawStep -->
+                <h1 class="logo-title">
+                    Draw<span>Step</span>
+                </h1>
+
+
+                <!-- Pencil + Connected Curved Line -->
+                <svg class="logo-icon"
+                     viewBox="0 0 58 58"
+                     aria-hidden="true">
+
+                    <path
+                        class="logo-line"
+                        d="
+                            M 33.1 33.8
+                            C 32 38,
+                              28 42,
+                              24 42
+                            C 20 42,
+                              17 39,
+                              13 41
+                            C 10 42,
+                              7 45,
+                              4 45
+                        "
+                    />
+
                     <g transform="rotate(23 39 20)">
-                        <path d="M 34 7 C 34 4.5, 44 4.5, 44 7 Z" />
-                        <line x1="34" y1="7" x2="44" y2="7" />
-                        <rect x="34" y="7" width="10" height="21" />
-                        <line x1="37" y1="7" x2="37" y2="28" />
-                        <line x1="41" y1="7" x2="41" y2="28" />
-                        <path d="M 34 28 L 39 35 L 44 28 Z" />
-                        <path d="M 37.5 33 L 39 35 L 40.5 33 Z" fill="#6C5CE7" stroke="#6C5CE7" />
+
+                        <!-- Rounded eraser/top -->
+                        <path
+                            d="
+                                M 34 7
+                                C 34 4.5,
+                                  44 4.5,
+                                  44 7
+                                Z
+                            "
+                        />
+
+                        <!-- Top divider -->
+                        <line
+                            x1="34"
+                            y1="7"
+                            x2="44"
+                            y2="7"
+                        />
+
+                        <!-- Pencil body -->
+                        <rect
+                            x="34"
+                            y="7"
+                            width="10"
+                            height="21"
+                        />
+
+                        <!-- Inner pencil lines -->
+                        <line
+                            x1="37"
+                            y1="7"
+                            x2="37"
+                            y2="28"
+                        />
+
+                        <line
+                            x1="41"
+                            y1="7"
+                            x2="41"
+                            y2="28"
+                        />
+
+                        <!-- Sharpened section -->
+                        <path
+                            d="
+                                M 34 28
+                                L 39 35
+                                L 44 28
+                                Z
+                            "
+                        />
+
+                        <!-- Pencil lead -->
+                        <path
+                            d="
+                                M 37.5 33
+                                L 39 35
+                                L 40.5 33
+                                Z
+                            "
+                            fill="#6C5CE7"
+                            stroke="#6C5CE7"
+                        />
+
                     </g>
+
                 </svg>
+
             </div>
 
-            <p class="brand-subtitle">Draw it step by step.</p>
+
+            <p class="brand-subtitle">
+                Draw it step by step.
+            </p>
+
         </section>
+
 
         <!-- Main Heading -->
         <h2 class="main-heading">
@@ -360,81 +484,236 @@
             step-by-step <span>drawing lesson.</span>
         </h2>
 
-        <!-- Process Grid -->
+
+        <!-- Process Steps Row -->
         <div class="steps-grid">
+
+            <!-- Step 1 -->
             <div class="step-item">
+
                 <svg class="step-icon" viewBox="0 0 24 24">
-                    <rect x="3" y="3" width="18" height="18" rx="4"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="4">
+                    </rect>
+
+                    <circle
+                        cx="8.5"
+                        cy="8.5"
+                        r="1.5">
+                    </circle>
+
                     <path d="M21 15l-5-5L5 21"></path>
+
                     <path d="M14 14l3.5-3.5L21 14"></path>
+
                 </svg>
-                <span class="step-text">Choose a photo</span>
+
+                <span class="step-text">
+                    Choose a photo
+                </span>
+
             </div>
 
+
+            <!-- Step 2 -->
             <div class="step-item">
+
                 <svg class="step-icon" viewBox="0 0 24 24">
+
                     <path d="M18 2a2.828 2.828 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L18 2z"></path>
-                    <line x1="14" y1="6" x2="18" y2="10"></line>
+
+                    <line
+                        x1="14"
+                        y1="6"
+                        x2="18"
+                        y2="10">
+                    </line>
+
                 </svg>
-                <span class="step-text">Pick your style</span>
+
+                <span class="step-text">
+                    Pick your style
+                </span>
+
             </div>
 
+
+            <!-- Step 3 -->
             <div class="step-item">
+
                 <svg class="step-icon" viewBox="0 0 24 24">
+
                     <path d="M11 2C11 6.5 7.5 10 3 10C7.5 10 11 13.5 11 18C11 13.5 14.5 10 19 10C14.5 10 11 6.5 11 2Z"></path>
+
                     <path d="M18 15C18 17.5 16 19.5 13.5 19.5C16 19.5 18 21.5 18 24C18 21.5 20 19.5 22.5 19.5C20 19.5 18 17.5 18 15Z"></path>
+
                 </svg>
-                <span class="step-text">Get your lesson</span>
+
+                <span class="step-text">
+                    Get your lesson
+                </span>
+
             </div>
 
+
+            <!-- Step 4 -->
             <div class="step-item">
+
                 <svg class="step-icon" viewBox="0 0 24 24">
-                    <rect x="4" y="5" width="16" height="10" rx="1"></rect>
-                    <line x1="2" y1="15" x2="22" y2="15"></line>
-                    <line x1="8" y1="15" x2="6" y2="22"></line>
-                    <line x1="16" y1="15" x2="18" y2="22"></line>
-                    <line x1="12" y1="2" x2="12" y2="5"></line>
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="10"
+                        rx="1">
+                    </rect>
+
+                    <line
+                        x1="2"
+                        y1="15"
+                        x2="22"
+                        y2="15">
+                    </line>
+
+                    <line
+                        x1="8"
+                        y1="15"
+                        x2="6"
+                        y2="22">
+                    </line>
+
+                    <line
+                        x1="16"
+                        y1="15"
+                        x2="18"
+                        y2="22">
+                    </line>
+
+                    <line
+                        x1="12"
+                        y1="2"
+                        x2="12"
+                        y2="5">
+                    </line>
+
                 </svg>
-                <span class="step-text">Draw step by step</span>
+
+                <span class="step-text">
+                    Draw step by step
+                </span>
+
             </div>
+
         </div>
 
-        <!-- Showcase Area -->
+
+        <!-- Visual Showcase -->
         <div class="showcase-container">
+
+            <!-- Left Photo -->
             <div class="photo-card photo-left">
-                <img src="assets/origin-land.png" alt="Landscape Photo">
+
+                <img
+                    src="assets/origin-land.png"
+                    alt="Landscape Photo">
+
             </div>
 
+
+            <!-- Custom Hand-Drawn Arrow -->
             <div class="arrow-curve">
-                <svg viewBox="0 0 90 60" fill="none">
-                    <path d="M 6 42 C 14 12, 54 4, 76 32" stroke="#6C5CE7" stroke-width="3.5" stroke-linecap="round"/>
-                    <path d="M 76 32 L 68 12" stroke="#6C5CE7" stroke-width="3.5" stroke-linecap="round"/>
-                    <path d="M 76 32 L 56 32" stroke="#6C5CE7" stroke-width="3.5" stroke-linecap="round"/>
+
+                <svg
+                    viewBox="0 0 90 60"
+                    fill="none">
+
+                    <path
+                        d="M 6 42 C 14 12, 54 4, 76 32"
+                        stroke="#6C5CE7"
+                        stroke-width="3.5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M 76 32 L 68 12"
+                        stroke="#6C5CE7"
+                        stroke-width="3.5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M 76 32 L 56 32"
+                        stroke="#6C5CE7"
+                        stroke-width="3.5"
+                        stroke-linecap="round"
+                    />
+
                 </svg>
+
             </div>
 
+
+            <!-- Right Photo -->
             <div class="photo-card sketch-right">
-                <img src="assets/pencil-land.png" alt="Landscape Sketch">
+
+                <img
+                    src="assets/pencil-land.png"
+                    alt="Landscape Sketch">
+
             </div>
+
         </div>
 
-        <!-- Action Links -->
+
+        <!-- Action Callouts -->
         <div class="action-container">
+
             <a href="#" class="primary-btn">
-                <span>Get Started</span>
+
+                <span>
+                    Get Started
+                </span>
+
                 <svg viewBox="0 0 24 24">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
+
+                    <line
+                        x1="5"
+                        y1="12"
+                        x2="19"
+                        y2="12">
+                    </line>
+
+                    <polyline
+                        points="12 5 19 12 12 19">
+                    </polyline>
+
                 </svg>
+
             </a>
+
 
             <a href="#" class="secondary-link">
-                <span>View plans</span>
+
+                <span>
+                    View plans
+                </span>
+
                 <svg viewBox="0 0 24 24">
-                    <polyline points="9 18 15 12 9 6"></polyline>
+
+                    <polyline
+                        points="9 18 15 12 9 6">
+                    </polyline>
+
                 </svg>
+
             </a>
+
         </div>
 
     </main>
