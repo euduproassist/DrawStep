@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DrawStep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Modern Reset to guarantee zero horizontal scrolling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #f8f9fe;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(220, 225, 255, 0.4) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(230, 220, 255, 0.4) 0px, transparent 50%);
+            color: #2D3142;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 520px;
+            min-height: 100vh;
+            padding: 24px 20px 32px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .top-bar img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        .top-bar svg {
+            width: 26px;
+            height: 26px;
+            stroke: #6C5CE7;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            cursor: pointer;
+        }
+
+
+        /* =========================================================
+           BRAND / LOGO
+           ========================================================= */
+
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /*
+         * LOGO ROW
+         *
+         * The text itself is centered normally.
+         * The pencil is allowed to extend naturally to the
+         * right, reproducing the reference composition.
+         */
+        .logo-row {
+            display: block;
+            width: max-content;
+            height: 76px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        /*
+         * DRAWSTEP TEXT
+         *
+         * This is intentionally lighter than the original.
+         * The reference uses a clean semi-bold appearance.
+         */
+        .logo-title {
+            font-size: 2.15rem;
+            font-weight: 600;
+            color: #111827;
+            letter-spacing: -1.25px;
+            line-height: 1;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-title span {
+            color: #6252D9;
+            font-weight: 600;
+        }
+
+
+        /*
+         * =========================================================
+         * PENCIL LOGO
+         * =========================================================
+         *
+         * The reference pencil:
+         *
+         * - sits directly after the "p"
+         * - starts above the text
+         * - points down-left
+         * - reaches below the text baseline
+         * - is narrow and tall
+         */
+        .logo-icon {
+            position: absolute;
+
+            /*
+             * The final "p" ends around this position.
+             * The pencil overlaps the end very slightly.
+             */
+            left: calc(100% - 9px);
+            top: -15px;
+
+            width: 74px;
+            height: 94px;
+
+            overflow: visible;
+
+            stroke: #6252D9;
+            fill: none;
+            stroke-width: 2.35;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+
+            z-index: 3;
+        }
+
+
+        /*
+         * CURVED LINE
+         *
+         * This is deliberately short.
+         * It begins directly at the pencil tip and travels
+         * leftward underneath the right side of DrawStep.
+         */
+        .logo-line {
+            stroke: #6252D9;
+            stroke-width: 2.7;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: #5A607F;
+            font-weight: 500;
+        }
+
+
+        /* Main Heading */
+        .main-heading {
+            text-align: center;
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #1E2029;
+            line-height: 1.3;
+            margin-bottom: 28px;
+        }
+
+        .main-heading span {
+            color: #6C5CE7;
+        }
+
+
+        /* 4-Step Process Grid */
+        .steps-grid {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10px;
+            width: 1px;
+            height: 36px;
+            background-color: #E2E8F0;
+        }
+
+        .step-icon {
+            width: 26px;
+            height: 26px;
+            stroke: #6C5CE7;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .step-text {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4A5568;
+            max-width: 80px;
+            line-height: 1.25;
+        }
+
+
+        /* Visual Showcase */
+        .showcase-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            position: relative;
+            margin-bottom: 36px;
+            padding: 10px 0;
+        }
+
+        .photo-card {
+            width: 44%;
+            background: #ffffff;
+            padding: 8px 8px 12px 8px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .photo-card.photo-left {
+            transform-origin: bottom right;
+            transform: rotate(-12deg) translateX(-6px);
+            margin-right: -4px;
+            z-index: 1;
+        }
+
+        .photo-card.sketch-right {
+            transform-origin: bottom left;
+            transform: rotate(12deg) translateX(6px);
+            margin-left: -4px;
+            z-index: 2;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+        }
+
+
+        /* Custom Hand-Drawn Arrow Styling */
+        .arrow-curve {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 86px;
+            height: 54px;
+            z-index: 5;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .arrow-curve svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+
+        /* Buttons Container */
+        .action-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #7C69EF 0%, #5842E3 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(88, 66, 227, 0.3);
+            text-decoration: none;
+        }
+
+        .primary-btn span {
+            flex: 1;
+            text-align: center;
+        }
+
+        .primary-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            position: absolute;
+            right: 20px;
+        }
+
+        .secondary-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #6C5CE7;
+        }
+
+        .secondary-link svg {
+            width: 18px;
+            height: 18px;
+            stroke: #6C5CE7;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <main class="app-container">
+
+        <!-- Header Controls -->
+        <header class="top-bar">
+
+            <img src="assets/free.png"
+                 alt="Free Icon"
+                 style="width: 26px; height: 26px; object-fit: contain;">
+
+            <svg viewBox="0 0 24 24">
+
+                <circle cx="12" cy="12" r="3"></circle>
+
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+
+            </svg>
+
+        </header>
+
+
+        <!-- Brand Section -->
+        <section class="brand-section">
+
+            <div class="logo-row">
+
+                <!-- DrawStep -->
+                <h1 class="logo-title">
+                    Draw<span>Step</span>
+                </h1>
+
+
+                <!-- Pencil + Connected Curved Line -->
+                <svg class="logo-icon"
+                     viewBox="0 0 74 94"
+                     aria-hidden="true">
+
+                    <!--
+                        REFERENCE-STYLE CURVED STROKE
+
+                        Pencil tip:
+                        approximately x=51 y=61
+
+                        Stroke travels down and left,
+                        creates the small wave,
+                        then finishes under the "p".
+                    -->
+                    <path
+                        class="logo-line"
+                        d="
+                            M 51 61
+                            C 49 66,
+                              45 69,
+                              40 69
+                            C 35 69,
+                              32 66,
+                              28 68
+                            C 25 70,
+                              22 72,
+                              18 72
+                        "
+                    />
+
+
+                    <!--
+                        PENCIL
+
+                        Tall, narrow and angled exactly in
+                        the same visual direction as Photo 2.
+                    -->
+                    <g transform="rotate(23 48 31)">
+
+                        <!-- Rounded eraser/top -->
+                        <path
+                            d="
+                                M 41 7
+                                C 41 4,
+                                  52 4,
+                                  52 7
+                                Z
+                            "
+                        />
+
+                        <!-- Top divider -->
+                        <line
+                            x1="41"
+                            y1="7"
+                            x2="52"
+                            y2="7"
+                        />
+
+                        <!-- Main pencil body -->
+                        <rect
+                            x="41"
+                            y="7"
+                            width="11"
+                            height="37"
+                        />
+
+                        <!-- Inner pencil lines -->
+                        <line
+                            x1="44.5"
+                            y1="7"
+                            x2="44.5"
+                            y2="44"
+                        />
+
+                        <line
+                            x1="48.5"
+                            y1="7"
+                            x2="48.5"
+                            y2="44"
+                        />
+
+                        <!-- Sharpened wooden section -->
+                        <path
+                            d="
+                                M 41 44
+                                L 46.5 52
+                                L 52 44
+                                Z
+                            "
+                        />
+
+                        <!-- Pencil lead -->
+                        <path
+                            d="
+                                M 44.8 49.5
+                                L 46.5 52
+                                L 48.2 49.5
+                                Z
+                            "
+                            fill="#6252D9"
+                            stroke="#6252D9"
+                        />
+
+                    </g>
+
+                </svg>
+
+            </div>
+
+
+            <p class="brand-subtitle">
+                Draw it step by step.
+            </p>
+
+        </section>
+
+
+        <!-- Main Heading -->
+        <h2 class="main-heading">
+            Turn any photo into a<br>
+            step-by-step <span>drawing lesson.</span>
+        </h2>
+
+
+        <!-- Process Steps Row -->
+        <div class="steps-grid">
+
+            <!-- Step 1 -->
+            <div class="step-item">
+
+                <svg class="step-icon" viewBox="0 0 24 24">
+
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="4">
+                    </rect>
+
+                    <circle
+                        cx="8.5"
+                        cy="8.5"
+                        r="1.5">
+                    </circle>
+
+                    <path d="M21 15l-5-5L5 21"></path>
+
+                    <path d="M14 14l3.5-3.5L21 14"></path>
+
+                </svg>
+
+                <span class="step-text">
+                    Choose a photo
+                </span>
+
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="step-item">
+
+                <svg class="step-icon" viewBox="0 0 24 24">
+
+                    <path d="M18 2a2.828 2.828 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L18 2z"></path>
+
+                    <line
+                        x1="14"
+                        y1="6"
+                        x2="18"
+                        y2="10">
+                    </line>
+
+                </svg>
+
+                <span class="step-text">
+                    Pick your style
+                </span>
+
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="step-item">
+
+                <svg class="step-icon" viewBox="0 0 24 24">
+
+                    <path d="M11 2C11 6.5 7.5 10 3 10C7.5 10 11 13.5 11 18C11 13.5 14.5 10 19 10C14.5 10 11 6.5 11 2Z"></path>
+
+                    <path d="M18 15C18 17.5 16 19.5 13.5 19.5C16 19.5 18 21.5 18 24C18 21.5 20 19.5 22.5 19.5C20 19.5 18 17.5 18 15Z"></path>
+
+                </svg>
+
+                <span class="step-text">
+                    Get your lesson
+                </span>
+
+            </div>
+
+
+            <!-- Step 4 -->
+            <div class="step-item">
+
+                <svg class="step-icon" viewBox="0 0 24 24">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="10"
+                        rx="1">
+                    </rect>
+
+                    <line
+                        x1="2"
+                        y1="15"
+                        x2="22"
+                        y2="15">
+                    </line>
+
+                    <line
+                        x1="8"
+                        y1="15"
+                        x2="6"
+                        y2="22">
+                    </line>
+
+                    <line
+                        x1="16"
+                        y1="15"
+                        x2="18"
+                        y2="22">
+                    </line>
+
+                    <line
+                        x1="12"
+                        y1="2"
+                        x2="12"
+                        y2="5">
+                    </line>
+
+                </svg>
+
+                <span class="step-text">
+                    Draw step by step
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Visual Showcase -->
+        <div class="showcase-container">
+
+            <!-- Left Photo -->
+            <div class="photo-card photo-left">
+
+                <img
+                    src="assets/origin-land.png"
+                    alt="Landscape Photo">
+
+            </div>
+
+
+            <!-- Custom Hand-Drawn Arrow -->
+            <div class="arrow-curve">
+
+                <svg
+                    viewBox="0 0 90 60"
+                    fill="none">
+
+                    <path
+                        d="M 6 42 C 14 12, 54 4, 76 32"
+                        stroke="#6C5CE7"
+                        stroke-width="3.5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M 76 32 L 68 12"
+                        stroke="#6C5CE7"
+                        stroke-width="3.5"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M 76 32 L 56 32"
+                        stroke="#6C5CE7"
+                        stroke-width="3.5"
+                        stroke-linecap="round"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <!-- Right Photo -->
+            <div class="photo-card sketch-right">
+
+                <img
+                    src="assets/pencil-land.png"
+                    alt="Landscape Sketch">
+
+            </div>
+
+        </div>
+
+
+        <!-- Action Callouts -->
+        <div class="action-container">
+
+            <a href="#" class="primary-btn">
+
+                <span>
+                    Get Started
+                </span>
+
+                <svg viewBox="0 0 24 24">
+
+                    <line
+                        x1="5"
+                        y1="12"
+                        x2="19"
+                        y2="12">
+                    </line>
+
+                    <polyline
+                        points="12 5 19 12 12 19">
+                    </polyline>
+
+                </svg>
+
+            </a>
+
+
+            <a href="#" class="secondary-link">
+
+                <span>
+                    View plans
+                </span>
+
+                <svg viewBox="0 0 24 24">
+
+                    <polyline
+                        points="9 18 15 12 9 6">
+                    </polyline>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
